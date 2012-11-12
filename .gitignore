@@ -1,0 +1,15 @@
+tcr.pdf
+*~
+*.aux
+*.log
+*.backup
+*.bak
+*.out
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ilg
+*.ind
+*.toc
+*.fls

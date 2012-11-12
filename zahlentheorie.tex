@@ -1,0 +1,44 @@
+\section{Zahlentheorie}
+
+\lstinputlisting{zahlentheorie/NumberTheory.cpp}
+
+%\subsection{GGT und Kongruenzen (Euklid)}
+
+%\lstinputlisting{zahlentheorie/euclid.cpp}
+
+%\subsection{Chinesischer Restsatz}
+
+%Zwei Kongruenzen der Art \( x \equiv a_1 \mod m_1,\; x \equiv a_2 \mod m_2 \)
+%lassen sich l"osen, indem man jeweils geschickt eine Eins dranmultipliziert und
+%das dann aufaddiert. Die erste Kongruenz erweitern wir mit \( m_2^{-1} m_2 \) (Inverses
+%bzgl. \(m_1\)) und die zweite mit \(m_1^{-1} m_1\) (bzgl. \(m_2\)). Die Summe
+%der rechten Seiten liefert dann das Ergebnis. Die Inversen lassen sich mit dem ggT-Algorithmus von
+%Euklid berechnen.
+
+%Dies funktioniert nur, wenn \(m_1\) und \(m_2\) teilerfremd sind. Wenn nicht,
+%muss \( a_1 \equiv a_2 \mod \text{ggT}(m_1, m_2) \) gelten. Dann kann man
+%die Kongruenzen durch diesen ggT teilen.
+
+%\subsection{Eulersche Phi-Funktion}
+%
+%\(\varphi(n) = \) Anzahl teilerfremde Zahlen kleiner gleich \(n\).
+%
+%\[ \varphi(n) = n \cdot \prod_{p \mid n, p \text{ prim}} \frac{p-1}{p}, \quad
+%m \text{ und } n \text{ teilerfremd } \Longrightarrow\; \varphi(m\cdot n) =
+%\varphi(m)\cdot\varphi(n) \text{ und } m^{\varphi(n)} \equiv 1 \mod n \]
+%
+%Wenn man nur die Werte bis ein paar Millionen braucht, dann mit Backtracking erzeugen:
+%
+%\lstinputlisting{zahlentheorie/phi.cpp}
+
+%\subsection{Primzahlen (Erathostenes, Miller-Rabin)}
+
+%\subsubsection{Sieb des Erathostenes}
+
+%\lstinputlisting{zahlentheorie/erathostenes.cpp}
+
+%Fenstersieb?
+
+%\subsubsection{Primzahltest nach Miller und Rabin}
+
+%\lstinputlisting{zahlentheorie/miller-rabin.cpp}

@@ -1,0 +1,32 @@
+\section{Suchen}
+
+%\subsection{Bin"are und tern"are Suche}
+
+%Wenn m"oglich, \lstinline{lower_bound} oder \lstinline{upper_bound} verwenden.
+
+%Wenn nicht, geht der generelle Algorithmus folgenderma"sen:
+%Man braucht ein Pr"adikat (z.B. \lstinline{x < 42}, das irgendwo in dieser Liste
+%von \lstinline{true} auf \lstinline{false} springt. Man setzt seine beiden
+%Anfangsindizes (z.B. \lstinline{lo} und \lstinline{hi}) auf Werte, von
+%denen man sicher wei"s, dass das Pr"adikat an dieses Stellen den jeweiligen
+%Wert annimmt. Achtung: Bei Suche in einem Array kann das hei"sen,
+%die beiden Startindizes au"serhalb des Arrays zu setzen, z.B. \lstinline{lo = -1}
+%und \lstinline{hi = N}. Dann wertet man immer das Pr"adikat beim
+%arithmetischen Mittel der beiden Indizes aus und setzt je nach Wert entweder
+%\lstinline{lo} oder \lstinline{hi} auf das Mittel. Solange wiederholen,
+%bis sich diese beiden Indizes nur noch um eins unterscheiden, dann
+%zeigt \lstinline{lo} auf den h"ochsten Wert, wo das Pr"adikat noch
+%\lstinline{true} ergibt und \lstinline{hi} auf das niedrigste \lstinline{false}.
+%
+%Die tern"are Suche eignet sich f"ur bitonische (auf einem Abschnitt monoton
+%steigende, auf dem anderen monoton fallende) Funktionen. Immer bei
+%einem \emph{und} zwei Dritteln des aktuellen Intervalls auswerten und dann
+%nur einen der beiden aktuellen Indizes anpassen.
+
+%\subsection{N-tes Element (Select)}
+
+%\lstinputlisting{suchen/select.cpp}
+
+\subsection{Teilstringsuche (Knuth-Morris-Pratt)}
+
+\lstinputlisting{suchen/kmp.cpp}

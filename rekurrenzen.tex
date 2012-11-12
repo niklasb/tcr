@@ -1,0 +1,94 @@
+\section{Rekurrenzen, Kombinatorik und DP}
+
+%\subsection{Lineare Rekurrenzen (z.B. Fibonacci)}
+
+%Lassen sich als Matrixgleichung schreiben, z.B. Fibonacci:
+%\[ \begin{pmatrix} F_n \\ F_{n-1} \end{pmatrix}
+%= \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}
+%\cdot \begin{pmatrix} F_{n-1} \\ F_{n-2} \end{pmatrix} \]
+%F"ur gro"se \(n\) dann einfach die Matrix mittels
+%schneller Potenzierung potenzieren, geht in \(\mathrm O(\log n)\).
+
+\subsection{Urnenmodelle}
+
+\begin{tabular}{r||c|c}
+\(k\) aus \(n\) ziehen & mit Zur"ucklegen & ohne Zur"ucklegen \\
+\hline
+mit Beachtung der Reihenfolge & \(n^k\) & \(\binom{n}{k}\cdot k!\) \\
+\hline
+ohne Beachtung der Reihenfolge & \(\binom{n+k-1}{k}\) & \(\binom{n}{k}\) \\
+\end{tabular}
+
+\subsection{Binomialkoeffizienten}
+
+\[ \binom{n}{k} = \frac{n!}{k!(n-k)!}, \quad
+\binom{n}{k} = \binom{n}{n-k}, \quad
+\binom{r}{k} = \frac{r}{k} \binom{r-1}{k-1}, \quad
+\binom{r}{k} = \binom{r-1}{k} + \binom{r-1}{k-1} \]
+\[ \binom{r}{k} = (-1)^k \binom{k-r-1}{k}, \quad
+\binom{r}{m} \binom{m}{k} = \binom{r}{k} \binom{r-k}{m-k}, \quad
+(x+y)^r = \sum_{k=0}^r \binom{r}{k} x^k y^{r - k} \]
+\[ \sum_{0 \leq k \leq n} \binom{k}{m} = \binom{n+1}{m+1}, \quad
+\sum_{k \leq n} \binom{r+k}{k} = \binom{r+n+1}{n}, \quad
+\sum_k \binom{r}{k} \binom{s}{n-k} = \binom{r+s}{n} \]
+
+\subsection{H"aufige Rekurrenzen in der Kombinatorik}
+
+%\subsubsection{Catalansche Zahlen}
+%
+%Anzahl der Sehnentriangulationen eines \(n+2\)-Ecks, Anzahl der g"ultigen Klammerausdr"ucke mit \(n%\) Klammern,
+%Anzahl der Pfade in einem Grid, wobei man nur eins nach rechts und eins nach unten gehen darf.
+%\[ C_n = \frac{1}{n+1} \binom{2n}{n}, \quad C_{n+1} = \sum_{k=0}^{n} C_k C_{n-k} \]
+
+\subsubsection{Stirlingsche Zahlen}
+
+\begin{itemize}
+\item 1. Art \\
+Anzahl der \(n\)-Permutationen mit genau \(k\) Zyklen.
+\[ s_{n+1,k} = s_{n,k-1} + n \cdot s_{n,k} \]
+
+\item 2. Art \\
+Anzahl der M\"oglichkeiten, genau $k$ nichtleere, paarweise disjunkte Partitionen aus \(n\) Elementen zu bilden.
+\[ S_{n+1,k} = S_{n,k-1} + k \cdot S_{n,k} \]
+\[ S_{n,k} = \frac{1}{k!} \sum^k_{j=0}(-1)^{k-j}{r \choose j}j^n \]
+\end{itemize}
+
+\subsubsection{Eulersche Zahlen}
+
+Anzahl der \(n\)-Permutation, wo genau \(k\) Elemente gr"o"ser als ihr 
+vorhergehendes sind.
+\[ E_{n,k} = (n-k) \cdot E_{n-1,k-1} + (k+1) \cdot E_{n-1,k} \]
+
+%\subsection{Longest Increasing Subsequence}
+
+%\lstinputlisting{rekurrenzen/lis.cpp}
+
+%\subsection{\textsc{SUBSET-SUM} (\textsc{KNAPSACK} nur mit Gewichten)}
+
+%\lstinputlisting{rekurrenzen/subset-sum.cpp}
+
+\subsection{Nim (bisschen Spieltheorie)}
+
+Gegeben: \(n\) Haufen mit \(a_1,\ldots,a_n\) Steinen, wer dran ist nimmt bis zu \(k\) Steine von einem Haufen (\(k=\infty\) erlaubt).
+
+\begin{description}
+\item[1. Variante:] Ziel ist es als letztes einen Stein aufzunehmen. Man gewinnt, wenn
+\lstinline{(a[1] % (k + 1)) XOR ... XOR (a[n] % (k + 1)) != 0} vor dem eigenen Zug.
+\item[2. Variante:] Ziel ist es, dass der Gegner den letztes Stein aufnimmt:
+To win at mis\`ere nim, play exactly as if you were playing normal play nim, except if your winning move would
+lead to a position that consists of heaps of size one only. In that case, leave exactly one more or one fewer
+heaps of size one than the normal play strategy recommends.
+\item[3. Variante:] Ziel ist es, den letzten Stein eines der Haufen aufzunehmen. Man gewinnt, wenn
+vor dem eigenem Zug ein Stapel maximal \(k\) Steine hat oder
+\lstinline{(a[1] % (k + 1)) XOR ... XOR (a[n] % (k + 1)) != 0},
+indem man entweder den letzten Stein nimmt oder man genau diesen Zustand herstellt.
+\end{description}
+
+%\subsection{Optimaler Suchbaum}
+%Mit Knuths Verbesserung.
+
+%max-sum-2d
+
+%%% Local Variables:
+%%% TeX-master: "tcr"
+%%% End:

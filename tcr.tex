@@ -1,0 +1,104 @@
+\documentclass[a4paper]{article}
+
+\usepackage{multicol}
+\usepackage{booktabs}
+
+\usepackage[american,ngerman]{babel}
+\usepackage{graphicx,subfigure,rotating}\graphicspath{{Figures/}}
+\usepackage{amsmath,amsfonts,amssymb,dsfont}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{pifont}
+\usepackage{booktabs}
+\usepackage{ltxtable}
+\usepackage{courier}
+
+% -----------------------------------------------------------------
+% page size and text layout
+\usepackage[left=1cm, right=1.5cm, top=1.5cm, bottom=1.2cm]{geometry}
+\setlength{\parindent}{0ex}
+\setlength{\parskip}{1ex}
+
+% -----------------------------------------------------------------
+% encoding and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% -----------------------------------------------------------------
+% heading
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\thepage}
+
+% -----------------------------------------------------------------
+% listings
+\usepackage{listings}
+\lstset{language=C++}
+\lstset{frame=tRBl, frameround=tttt, basicstyle=\footnotesize\ttfamily}
+\lstset{numbers=left, numberstyle=\scriptsize}
+\lstset{tabsize=4}
+
+% -----------------------------------------------------------------
+\usepackage{color}
+\setcounter{tocdepth}{2}
+\definecolor{mylinkcolor}{rgb}{0.5812,0.0665,0.0659} % IndianRed
+\definecolor{mycitecolor}{rgb}{0.075,0.31,0.0431} % MossGreen
+\definecolor{myurlcolor}{rgb}{0.0118,0.098,0.7412} % DarkBlue
+\usepackage[unicode,pdftex,bookmarksdepth,pdfpagelabels,colorlinks,bookmarks=true,bookmarksopen,citecolor = {mycitecolor},linkcolor = {mylinkcolor},urlcolor={myurlcolor},breaklinks=true,hypertexnames=false,hyperindex=true,encap,backref,pagebackref]{hyperref}
+
+% -----------------------------------------------------------------
+% title information
+
+\title{
+\includegraphics{Kitlogo_en_cmyk.pdf}\\[1cm]
+\Huge \textbf{Team Contest Reference}\\[1cm]
+\Large 2012 ACM ICPC Northwestern European Regional Contest\\[1ex]
+\Large Delft, November 23-25, 2012\\[2cm]
+}
+
+\author{
+\LARGE Karlsruhe International Team
+}
+
+%\date{\Large \today}
+%\date{\today}
+\date{}
+
+
+% -----------------------------------------------------------------
+
+% make LaTeX less fussy about line breaking
+\sloppy
+
+% -----------------------------------------------------------------
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+% -----------------------------------------------------------------
+\setcounter{page}{1}
+%\tableofcontents
+% \newpage % keine extra seite
+
+% -----------------------------------------------------------------
+\input{suchen.tex}
+%\input{parser.tex}
+\input{arithmetik.tex}
+%\input{rekurrenzen.tex}
+\input{zahlentheorie.tex}
+\input{graphentheorie.tex}
+\input{geometrie.tex}
+\input{datenstrukturen.tex}
+\input{formulae.tex}
+
+\end{document}
+% -----------------------------------------------------------------

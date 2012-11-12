@@ -1,0 +1,23 @@
+\section{Parser}
+
+\subsection{Rekursiver Parser f"ur arithmetische Ausdr"ucke}
+
+\lstinputlisting{parser/arith-eval.cpp}
+
+\subsection{Umwandlung von Infix- nach Postfix-Notation}
+
+\lstinputlisting{parser/infix-postfix.cpp}
+
+\subsection{Bottom-up-Parser nach Cocke, Younger und Kasami}
+
+Eine kontextfreie Grammatik ist in Chomsky-Normalform, wenn jede Produktion eine der folgenden Formen hat:
+\[ S \to \varepsilon, \quad A \to a, \quad A \to BC \]
+Um Grammatik in CNF zu bringen, folgende Schritte:
+\begin{itemize}
+\item Jedem Terminal ein Nichtterminal zuordnen, Produktion \(X_a \to a\) einf"ugen.
+\item Wenn wo mehr als zwei Nichtterminale stehen, immer zwei zu einem neuen Symbol zusammenfassen und
+entsprechende Produktion einf"ugen.
+\item \(\varepsilon\)-Produktionen entfernen.
+\item Kettenproduktionen (\(A \to B\) entfernen, indem \(B\) nacheinander durch alle seine Folgeprodukte ersetzt wird.
+\end{itemize}
+\lstinputlisting{parser/cyk.cpp}

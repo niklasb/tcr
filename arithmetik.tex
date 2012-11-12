@@ -1,0 +1,102 @@
+\section{Arithmetik und Algebra}
+
+%\subsection{Bigints}
+
+%\subsubsection{Bigints in C++}
+
+%\lstinputlisting{arithmetik/bigint.cpp}
+
+%\subsubsection{Bigints in Java}
+
+%\lstinputlisting{arithmetik/bigint.java}
+
+%\subsection{Schnelles Potenzieren}
+
+%\lstinputlisting{arithmetik/potenz.cpp}
+
+%\subsection{Endliche Summation}
+
+%Def. Pochhammer-Symbol: \(n^{\underline{k}}=n\cdot(n-1)\cdot\ldots\cdot(n-k+1)\).
+%Bei Summation "uber Polynome, dr"ucke die normalen Potenzen in dieser Schreibweise
+%aus, z.B. \(3n^2-n=3n^{\underline{2}}+2n^{\underline{1}}\). Dann wie in der Analysis
+%integrieren, ergibt eine Art Stammfunktion:
+%\[\sum 3n^{\underline{2}}+2n^{\underline{1}} = n^{\underline{3}}+n^{\underline{2}}\]
+%Wenn man das Polynom von \(1,\,\ldots,\,N\) summiert, muss man die Stammfunktion
+%an der Stelle \(N+1\) und 1 auswerten:
+%\[\sum_{n=1}^N 3n^{\underline{2}}+2n^{\underline{1}}
+%= n^{\underline{3}}+n^{\underline{2}}\vert_{1}^{N+1}
+%= (N+1)^{\underline{3}}+(N+1)^{\underline{2}} = (N+1)N^2\]
+%
+%Das Gegenteil vom Summationsoperator \(\sum\) ist der Differenzenoperator
+%\(\Delta f(x) = f(x+1) - f(x)\). Der e-Funktion entspricht \(2^n\),
+%also \(\sum 2^n = \Delta 2^n = 2^n\).
+
+%\subsection{Matrixmultiplikation (ikj, Strassen)}
+
+%\subsubsection{Cachefreundliche Matrixmultiplikation}
+
+%\lstinputlisting{arithmetik/ikj.cpp}
+
+%\subsubsection{Algorithmus von Strassen}
+
+%\[ \begin{pmatrix} r & s \\ t & u \end{pmatrix}
+%= \begin{pmatrix} a & b \\ c & d \end{pmatrix} 
+%\begin{pmatrix} e & f \\ g & h \end{pmatrix} \]
+%
+%\begin{eqnarray}{rcl}
+%p_1 & = & a(f-h) \\
+%p_2 & = & (a+b)h \\
+%p_3 & = & (c+d)e \\
+%p_4 & = & d(g-e) \\
+%p_5 & = & (a+d)(e+h) \\
+%p_6 & = & (b-d)(g+h) \\
+%p_7 & = & (a-c)(e+f)
+%\end{eqnarray}
+%
+%Dann:
+%
+%\[ r = p_5 + p_4 - p_2 + p_6, \quad s = p_1 + p_2, \quad t = p_3 + p_4, \quad u = p_5 + p_1 - p_3 - p_7 \]
+
+\subsection{Lineare Gleichungssysteme (LGS) und Determinanten}
+
+%\subsubsection{Gau"s-Algorithmus}
+
+%\lstinputlisting{arithmetik/gauss.cpp}
+
+\subsubsection{LR-Zerlegung, Determinanten}
+
+\lstinputlisting{arithmetik/lr.cpp}
+
+\subsection{Numerical Integration (Romberg)}
+
+\lstinputlisting{arithmetik/romberg.cpp}
+
+%\subsection{Polynome}
+
+%\subsubsection{Newtonsche/Hermitsche Interpolation}
+
+%Dividierte Differenzen:
+%\[ [x_i,\ldots,x_j] = \frac{[x_{i+1},\ldots,x_j] - [x_i,\ldots,x_{j-1}]}{x_j - x_i} \]
+%\[ [\underbrace{x_i,\ldots,x_i}_{n \mathrm{mal}}] = f^{(n-1)}(x_i)/n! \]
+
+%Newton-Polynome:
+%\[ P_i = \prod_{k=1}^{i-1} (x-x_k) \]
+%Also immer ein Term weniger mulitplizieren als das neue \(x_i\)!
+
+%Interpoliertes Polynom:
+%\[ P = \sum_{i=1}^{n} [x_1,\ldots,x_i] \cdot P_i \]
+
+%Wenn ein \(x_i\) mehrmals auftaucht, als man auch die ersten paar Ableitungen
+%interpolieren will, wird dieses \(x_i\) dann halt auch im Newton-Polynom
+%mehrmals dranmultipliziert.
+
+%\subsubsection{Hornerschema}
+
+%Seien \(f(T) = \sum_{i = 0}^{n} \alpha_i T^i\) und \(g(T) = \sum_{j = 0}^{m} \beta_j T^j\) zwei Polynome. %Setze f"ur alle \(i = n,\,\ldots,\,0\): 
+%\[\gamma_i = \alpha_i - 
+%\sum_{j = \max(1, m - i)}^{\min(m, n - i)} \beta_{m - j} \gamma_{i + j}\] 
+%Dann ist der Rest \(r(T)\) und das Ergebnis \(s(T)\) der Division von \(f\) durch \(g\) gegeben durch: 
+%\[r(T) = \sum_{i = 0}^{m - 1} \gamma_i T^i,\quad s(T) 
+%= \sum_{j = m}^{n} \gamma_j T^{j-m}\]
+
+% Polynommultiplikation via FFT
