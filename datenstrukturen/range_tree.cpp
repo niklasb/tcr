@@ -20,6 +20,7 @@ X xs[size]; bool leaf[size]; Subtree subtrees[size]; Point input[maxn];
 
 void callback(Point& p) { cout << p.x << " " << p.y << endl; }
 
+// space: O(n * log n), build: O(n * log n), query: O(log n + k) (k = number of results)
 int left(int i) { return i * 2 + 1; }
 int right(int i) { return i * 2 + 2; }
 int parent(int i) { return (i-1)/2; }
