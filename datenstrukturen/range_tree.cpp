@@ -18,12 +18,11 @@ struct Subtree {
 const int size = maxn*4 + 10;
 X xs[size]; bool leaf[size]; Subtree subtrees[size]; Point input[maxn];
 
+void callback(Point& p) { cout << p.x << " " << p.y << endl; }
+
 int left(int i) { return i * 2 + 1; }
 int right(int i) { return i * 2 + 2; }
 int parent(int i) { return (i-1)/2; }
-
-void callback(Point& p) { cout << p.x << " " << p.y << endl; }
-
 // input must be sorted by the X coordinate!
 void build(Point input[], int start, int end, int pos) {
   int m = (end + start - 1)/2;
@@ -60,8 +59,7 @@ void walk(int n, int x, int y1, int y2, bool r) {
   }
   if ((r && x <= xs[n]) || (!r && x >= xs[n]))
     report(n, y1, y2);
-}
-// reports points (x, y) with x1 <= x <= x2 && y1 <= y <= y2
+} // reports points (x, y) with x1 <= x <= x2 && y1 <= y <= y2
 void query(int x1, int x2, int y1, int y2) {
   int n = 0;
   while (!leaf[n]) { // find split point
@@ -81,5 +79,5 @@ int main() {
   int len = sizeof test / sizeof *test;
   sort(test, test + len, cmpX); // don't forget to sort!
   build(test, 0, len, 0);
-  query(2, 6, 5, 100);
+  query(2, 6, 5, 100); // will output {4,5}, {3,6} and {2,7}
 }
