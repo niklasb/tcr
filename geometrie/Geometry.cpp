@@ -10,17 +10,12 @@ const int maxn = 1510;
 const double PI = acos(-1.0);
 const double E = exp(1.0);
 const double EULER = 0.57721566490153286;
-//format output, change -0.00 to 0.00, d is the number of digits after dot.
-inline void fprintf(const double &x,const int &d) {
-	static char s[20];
-	sprintf(s,"%.*lf",d,x);
-	if (s[0]=='-') {
-		bool illegal_zero = true;
-		for (int i=1;s[i]!=0;++i)
-			if (s[i]!='.' && s[i]!='0') {illegal_zero = false; break;}
-		if (illegal_zero) printf("%s",s+1); else printf("%s",s);
-	} else printf("%s",s);
-} // sign function
+// change -0.00 to 0.00, d is the number of digits after dot.
+inline double fix_negative(double x, int d) {
+	static char s[40]; sprintf(s,"%.*lf",d,x);
+	return strpbrk(s, "123456789") ? x : 0;
+}
+// sign function
 inline int sgn(const double &x) {
 	return x<-EPS?-1:x>EPS;
 } // point in 2D space
