@@ -69,15 +69,4 @@ void DFS(int k, int father, int deep) {
 /*A)cancel the comment marked with (1) we get the algorithm of cut nodes
 B)cancel the comment marked with (1) and (2) we get the algorithm of bridges
 C)cancel the comment marked with (1)(the line with *** should be commented) and (3)
-	we get the algorithm of strongly connected components for directed graph
-D)cancel the comment marked with (1) and (3) we get the algorithm of biconnected
-	components for undirected graph
-E)something else: algorithm of Kosaraju: Use the algotihm above to get the time record
-array a, and then dfs each node k according to a[k] from biggest to smallest in the
-reverse graph, each component we get is a strongly connected component.
-F)2-sat: Construct the graph according to the constraints with 2n nodes. By
-compressing each strongly connected component to a node and reversing all the edges
-we get a DAG, then get the topological order of this DAG. Each time we select a node
-that is legal according to the topological order, mark it as chosen and its paradoxical
-node(if element X is in node V then the node contains -X is V's paradoxical node) as illegal.
-At last all the compressed elements in the chosen node are the ones we want to choose*/
+	we get the algorithm of strongly connected components for directed graph */
