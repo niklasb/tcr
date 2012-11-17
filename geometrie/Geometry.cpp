@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
+#define rep(i,x) for (int i=0;i<(x);++i)
 using namespace std;
 const double EPS = 1e-10;
 const double INF = 1e100;
@@ -198,26 +199,25 @@ void plane2Points(double A, double B, double C, double D, Point3D &p0, Point3D &
 }
 template <typename T, int N> struct Matrix {
   T data[N][N];
-  static Matrix<T,N> zero() { Matrix m = {}; return m; }
-  static Matrix<T,N> identity() { Matrix m = {}; rep(i,N) m[i][i] = 1; return m; }
+  Matrix<T,N>() { memset(data, 0, sizeof data); }
+  static Matrix<T,N> identity() { Matrix m; rep(i,N) m[i][i] = 1; return m; }
   Matrix<T,N> operator+(const Matrix<T,N>& other) const {
-    Matrix res = {};
-    rep(i,N) rep(j,N) res[i][j] = data[i][j] + other[i][j];
-    return res;
+    Matrix res; rep(i,N) rep(j,N) res[i][j] = data[i][j] + other[i][j]; return res;
   }
   Matrix<T,N> operator*(const Matrix<T,N>& other) const {
-    Matrix res = {};
-    rep(i,N) rep(k,N) rep(j,N) res[i][j] += data[i][k] * other[k][j];
-    return res;
+    Matrix res; rep(i,N) rep(k,N) rep(j,N) res[i][j] += data[i][k] * other[k][j]; return res;
   }
   template <typename E> Matrix<T,N> operator^(E exp) const {
     Matrix<T,N> result = Matrix<T,N>::identity(), base = *this;
     while (exp) {
-      if (exp & 1) result *= base;
+      if (exp & 1) result = result * base;
       exp >>= 1;
-      base *= base;
+      base = base * base;
     }
     return result;
+  }
+  Matrix<T,N> transpose() const {
+    Matrix<T,N> res; rep(i,N) rep(j,N) res[i][j] = data[j][i]; return res;
   }
   void multiply_vector(const T v[N], T result[N]) {
     rep(i, N) result[i] = 0;
@@ -225,7 +225,10 @@ template <typename T, int N> struct Matrix {
   }
   const T* operator[](int i) const { return data[i]; }
   T* operator[](int i) { return data[i]; }
-}; // creates a rotation matrix around axis x (must be normalized). Rotation is
+};
+template <typename T, int N> ostream& operator<<(ostream& out, Matrix<T,N> mat) {
+  rep(i, N) { rep(j, N) cout << mat[i][j] << " "; cout << endl; } return out;
+} // creates a rotation matrix around axis x (must be normalized). Rotation is
 // counter-clockwise if you look in the inverse direction of x onto the origin
 template<typename M> void create_rot_matrix(M& m, double x[3], double a) {
   rep(i, 3) rep(j, 3) {
@@ -234,4 +237,3 @@ template<typename M> void create_rot_matrix(M& m, double x[3], double a) {
     else m[i][j] += x[(6-i-j)%3] * ((i == (2+j) % 3) ? -1 : 1) * sin(a);
   }
 }
-
