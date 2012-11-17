@@ -16,10 +16,8 @@ inline double fix_negative(double x, int d) {
 	return strpbrk(s, "123456789") ? x : 0;
 }
 // sign function
-inline int sgn(const double &x) {
-	return x<-EPS?-1:x>EPS;
-} // point in 2D space
-struct Point {
+inline int sgn(const double &x) { return x<-EPS?-1:x>EPS; }
+struct Point { // point in 2D space
     double x,y;
     Point(): x(0.0),y(0.0) {};
     Point(double x0,double y0): x(x0),y(y0) {};
@@ -165,12 +163,9 @@ void minimalCycle(Point *points, int n, Point &center, double &radius) {
 	static Point p[maxn];
 	int randcase=n,x,y;
 	for (int i=0;i<n;++i) p[i] = points[i];
-	srand((unsigned)time(NULL));   //expected runtime of the algorithm is O(n)
-	for (int i=0;i<randcase;++i) { //randomize all the points.
-		x = rand()%n;
-		y = rand()%n;
-		swap(p[x],p[y]);
-	}
+	srand((unsigned)time(NULL)); //expected runtime of the algorithm is O(n)
+	for (int i=0;i<randcase;++i) //randomize all the points.
+		swap(p[rand()%n],p[rand()%n]);
 	center = p[0]; radius = 0; int useless;
 	for (int i=1;i<n;++i) {
 		if (dist(center,p[i])>radius+EPS) {
@@ -206,12 +201,12 @@ template <typename T, int N> struct Matrix {
   static Matrix<T,N> zero() { Matrix m = {}; return m; }
   static Matrix<T,N> identity() { Matrix m = {}; rep(i,N) m[i][i] = 1; return m; }
   Matrix<T,N> operator+(const Matrix<T,N>& other) const {
-    Matrix res;
+    Matrix res = {};
     rep(i,N) rep(j,N) res[i][j] = data[i][j] + other[i][j];
     return res;
   }
   Matrix<T,N> operator*(const Matrix<T,N>& other) const {
-    Matrix res;
+    Matrix res = {};
     rep(i,N) rep(k,N) rep(j,N) res[i][j] += data[i][k] * other[k][j];
     return res;
   }
