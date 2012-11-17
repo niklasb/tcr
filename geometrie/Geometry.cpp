@@ -201,3 +201,42 @@ void plane2Points(double A, double B, double C, double D, Point3D &p0, Point3D &
     if(sgn(B)!=0){p0=Point3D(0,-D/B,0);p1=Point3D(1,-(A+D)/B,0);p2=Point3D(0,-(C+D)/B,0);} else
     if(sgn(C)!=0){p0=Point3D(0,0,-D/C);p1=Point3D(1,0,-(A+D)/C);p2=Point3D(0,1,-(B+D)/C);}
 }
+template <typename T, int N> struct Matrix {
+  T data[N][N];
+  static Matrix<T,N> zero() { Matrix m = {}; return m; }
+  static Matrix<T,N> identity() { Matrix m = {}; rep(i,N) m[i][i] = 1; return m; }
+  Matrix<T,N> operator+(const Matrix<T,N>& other) const {
+    Matrix res;
+    rep(i,N) rep(j,N) res[i][j] = data[i][j] + other[i][j];
+    return res;
+  }
+  Matrix<T,N> operator*(const Matrix<T,N>& other) const {
+    Matrix res;
+    rep(i,N) rep(k,N) rep(j,N) res[i][j] += data[i][k] * other[k][j];
+    return res;
+  }
+  template <typename E> Matrix<T,N> operator^(E exp) const {
+    Matrix<T,N> result = Matrix<T,N>::identity(), base = *this;
+    while (exp) {
+      if (exp & 1) result *= base;
+      exp >>= 1;
+      base *= base;
+    }
+    return result;
+  }
+  void multiply_vector(const T v[N], T result[N]) {
+    rep(i, N) result[i] = 0;
+    rep(i, N) rep(j, N) result[i] += data[i][j] * v[j];
+  }
+  const T* operator[](int i) const { return data[i]; }
+  T* operator[](int i) { return data[i]; }
+}; // creates a rotation matrix around axis x (must be normalized). Rotation is
+// counter-clockwise if you look in the inverse direction of x onto the origin
+template<typename M> void create_rot_matrix(M& m, double x[3], double a) {
+  rep(i, 3) rep(j, 3) {
+    m[i][j] = x[i]*x[j]*(1-cos(a));
+    if (i == j) m[i][j] += cos(a);
+    else m[i][j] += x[(6-i-j)%3] * ((i == (2+j) % 3) ? -1 : 1) * sin(a);
+  }
+}
+
