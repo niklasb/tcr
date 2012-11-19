@@ -7,7 +7,7 @@ static const int maxn = 450;			 	// number of nodes, should be bigger than n
 static const int maxm = 5000;              // number of edges
 typedef long long Captype;		// set capacity type (long long or int)
 typedef long long Valtype;		// set type of edge weight (long long or int)
-static const Captype flowlimit = 1ll<<60;    // should be bigger than maxflow
+static const Captype flowlimit = 1LL<<60;    // should be bigger than maxflow
 struct edge {
 	int node,next; Captype flow; Valtype value;
 }   edges[maxm<<1];

@@ -42,7 +42,7 @@ void build(Point input[], int start, int end, int pos) {
   }
 }
 void report(int n, int y1, int y2) {
-  //callback(subtrees[n]); return; // uncomment to report whole subtree
+  //callback(subtrees[n], y1, y2); return; // uncomment to report whole subtree
   vector<Point>& p = subtrees[n].points;
   typename vector<Point>::iterator l = lower_bound(p.begin(), p.end(), Point(0, y1), cmpY),
                                    r = upper_bound(p.begin(), p.end(), Point(0, y2), cmpY);

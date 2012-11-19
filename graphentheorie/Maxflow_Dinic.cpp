@@ -7,7 +7,7 @@ using namespace std;
 struct Dinic { //call init() before use !!!
 	typedef long long captype;  // set capacity type (long long or int)
 	static const int maxn = 5000, maxm = 30000;
-	static const captype flowlimit = 1ll << 60; // should be > maxflow
+	static const captype flowlimit = 1LL << 60; // should be > maxflow
 	struct edge {
 		int v, next;
 		captype c;
