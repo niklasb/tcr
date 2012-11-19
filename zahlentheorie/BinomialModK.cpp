@@ -24,3 +24,4 @@ int get_n_choose_k_mod_pe(int n, int k, int p, int mod) {
 	int res = (LL) a * inv(b, mod) % mod * inv(c, mod) % mod * PowerMod(p, cnt1 - cnt2 - cnt3, mod) % mod;
 	return res;
 }
+// Lucas's Theorem (p prime, m_i,n_i base p repr. of m, n): binom(m,n)==procduct(binom(m_i,n_i)) (mod p)
