@@ -41,14 +41,14 @@ void build(Point input[], int start, int end, int pos) {
     subtrees[pos].update(l, r); // only for augmentation
   }
 }
-void report(int n, int y1, int y2) {
+void report(int n, Y y1, Y y2) {
   //callback(subtrees[n], y1, y2); return; // uncomment to report whole subtree
   vector<Point>& p = subtrees[n].points;
-  typename vector<Point>::iterator l = lower_bound(p.begin(), p.end(), Point(0, y1), cmpY),
-                                   r = upper_bound(p.begin(), p.end(), Point(0, y2), cmpY);
+  typename vector<Point>::iterator l = lower_bound(p.begin(), p.end(), Point(X(), y1), cmpY),
+                                   r = upper_bound(p.begin(), p.end(), Point(X(), y2), cmpY);
   for (; l != r; ++l) callback(*l);
 }
-void walk(int n, int x, int y1, int y2, bool r) {
+void walk(int n, X x, Y y1, Y y2, bool r) {
   while (!leaf[n]) {
     if (x <= xs[n]) {
       if (r) report(right(n), y1, y2);
@@ -61,7 +61,7 @@ void walk(int n, int x, int y1, int y2, bool r) {
   if ((r && x <= xs[n]) || (!r && x >= xs[n]))
     report(n, y1, y2);
 } // reports points (x, y) with x1 <= x <= x2 && y1 <= y <= y2
-void query(int x1, int x2, int y1, int y2) {
+void query(X x1, X x2, Y y1, Y y2) {
   int n = 0;
   while (!leaf[n]) { // find split point
     if      (x1 <= xs[n] && x2 <= xs[n]) n = left(n);
