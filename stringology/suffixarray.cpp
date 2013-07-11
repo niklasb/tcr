@@ -98,7 +98,7 @@ int main() {
 	scanf("%d",&n);
 	for (int i=0;i<n;++i) { scanf("%d",&s[i]); s[i]++; } // let s[i] != 0
 	s[n]=s[n+1]=s[n+2]=0;	// add 3 special value after the sequence
-	if (n>1) suffixArray(s,SA,n,256); else SA[0]=s[0]; 	// get SA array
+	if (n>1) suffixArray(s,SA,n,256); else SA[0]=0; 	// get SA array
 	Height_RMQ();
 	printf("%d\n",LCP(0,1)); // Example
 	return 0;
