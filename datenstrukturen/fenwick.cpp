@@ -1,15 +1,13 @@
-#include <vector>
-// Element veraendern UND kumulative Summe auslesen geht in O(log n)
-class fenwick
-{
-	vector<int> a;	
-public:
-	fenwick(int n) : a(n) {}
-
-	// v[i] += k
-	void incr(int i, int k)	{a[i] += k;	while (i > 0) {i &= i - 1; a[i] += k;} }
-
-	// Summe von a[0] bis a[i] (inkl.)
-	int get(int i) {int r = a[0]; while (++i < int(a.size())) {r -= a[i]; i |= i - 1;}
-		return r;}
-};
+const int n = 100;
+static int tree[n+1];
+// get v[idx] (1 <= idx <= n)
+int read(int idx){
+  int sum = 0;
+  for (; idx > 0; idx -= idx&-idx) sum += tree[idx];
+  return sum;
+}
+// update v[1..idx] += val
+void update(int idx, int val){
+  int sum = 0;
+  for (; idx <= n; idx += idx&-idx) tree[idx] += val;
+}

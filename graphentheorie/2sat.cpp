@@ -15,23 +15,23 @@ int var(int v) { return v*2; }
 int neg(int v) { return (v%2==0)?(v-1):(v+1); }
 
 void dfs(int u) {
-  visit[u] = true;
+  visit[u] = 1;
   int i, len = adj[u].size();
   for (i = 0; i < len; ++i)
     if (!visit[adj[u][i]]) dfs(adj[u][i]);
   order[cnt++] = u;
 }
 bool rdfs(int u) {
-  visit[u] = true; id[u] = cnt;
-  if (id[u] == id[neg(u)]) return false;
+  visit[u] = 1; id[u] = cnt;
+  if (id[u] == id[neg(u)]) return 0;
   int i, len = radj[u].size();
   for (i = 0; i < len; i++)
-    if (!visit[radj[u][i]] && !rdfs(radj[u][i])) return false;
-  return true;
+    if (!visit[radj[u][i]] && !rdfs(radj[u][i])) return 0;
+  return 1;
 }
 void init() {
   memset(visit, 0, sizeof visit);
-  memset(id, 0, sizeof(id));
+  memset(id, 0, sizeof id);
   memset(ind, 0, sizeof ind );
   memset(color, 0, sizeof color);
   while (!q1.empty()) q1.pop(); while (!q2.empty()) q2.pop();
@@ -45,9 +45,9 @@ bool kosaraju() {
   for (cnt = 0, i = 2*n-1; i >= 0; i--)
     if (!visit[order[i]]) {
       cnt++;
-      if (!rdfs(order[i])) return false;
+      if (!rdfs(order[i])) return 0;
     }
-  return true;
+  return 1;
 }
 void topsort() {
   for (int i = 1; i <= 2*n; i++){

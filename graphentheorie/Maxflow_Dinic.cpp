@@ -4,10 +4,11 @@
 #include <iostream>
 using namespace std;
 
+typedef long long captype;  // set capacity type (long long or int)
+static const captype flowlimit = 1LL << 60; // should be > maxflow
+
 struct Dinic { //call init() before use !!!
-	typedef long long captype;  // set capacity type (long long or int)
 	static const int maxn = 5000, maxm = 30000;
-	static const captype flowlimit = 1LL << 60; // should be > maxflow
 	struct edge {
 		int v, next;
 		captype c;
@@ -19,11 +20,12 @@ struct Dinic { //call init() before use !!!
 		n = nn, S = SS, T = TT, top = 0, maxflow = 0;
 		memset(g, -1, sizeof(g[0]) * n);
 	}
-	inline void addedge(int u, int v, captype c) {
+	inline int addedge(int u, int v, captype c) {
 		e[top] = (edge ) { v, g[u], c, 0 };
 		g[u] = top++;
 		e[top] = (edge ) { u, g[v], 0, 1 }; //undirected: change 0 to c
 		g[v] = top++;
+		return top-2;
 	}
 
 	bool dinicBFS() {

@@ -150,4 +150,17 @@ $ \left(\frac{p}{q}\right)\left(\frac{q}{p}\right)=(-1)^{\frac{p-1}{2}\frac{q-1}
 \subsection{Game Theory}
 \LTXtable{\textwidth}{Formulae_gametheory.tex}
 
-\includegraphics[scale=0.75]{chinese.png}
+\begin{itemize}
+\item Johnson's Reweighting Algorithm: add a new source S, it can reach all other nodes with 0 cost. Use bellmanford to calculate the shortest path d[i] from S to all other nodes i. Exit when negative cycle is found. Otherwise the weights of all edges (u,v) in the original graph are changed to d[u]+w[u,v]-d[v]. Now all weights are nonnegative, so dijkstra algorithm can be used.
+\item feasible flow in a network with both upper and lower capacity constraints, no source or sink : capacity are changed to upperbound-lowerbound. Add a new source and a sink. let M[v] = (sum of lowerbounds of ingoing edges to v) - (sum of lowserbounds of outgoing edges from v). For all v, if M[v]>0 then add edge (S,v) with capacity M, otherwise add (v,T) with capacity -M. If all outgoing edges from S are full, then a feasible flow exists, it is the flow plus the original lowerbounds.
+\item feasible flow in a network with both upper and lower capacity constraints, with source s and sink t: add edge (t,s) with capacity infinity. Binary search for the lower bound, check whether a feasible exists for a network WITHOUT source or sink (B).
+\item system of difference constraints: change all the conditions to the form a-b<=c. For every such condition add an edge (b,a) with weight c. Add a source which can reach all the nodes with 0 cost. Find shortest paths with bellman ford from s. d[v] is a solution.
+\item min-weight vertex cover in a bipartite graph: partition into A and B. add edges $s \rightarrow A$ with capacities $w(A)$ and edges $B \rightarrow t$ with capacities $w(B)$. add edges of capacity $\infty$ from A to B where there are edges in the graph. answer is maxflow. the vertex cover is the set of nodes that are
+adjacent to cut edges, or alternatively, the left-side nodes NOT reachable from the source and the right-side edges reachable from the source (in the residual network).
+\item general graph: complement of a vertex cover is an independent set $\rightarrow$ max-weight independent set is complement of min-weight vertex cover.
+\item optimal proportion spanning tree: z=sigma(benifit[i] * x[i]) - I * sigma(cost[i] * x[i]) = sigma(d[i] * x[i]). binary search for I, find the MST so that z = 0, then I is the best proportion.
+\item optimal proportion cycle: same as above, change the "find MST" to "check if there're positive cycles"
+\item Bipartite Graph: Min Cover (fewest nodes cover all edges) = max matching. Min path covering for DAG: n - maxmatching. Min dominating set = max matching + isolated nodes. Max independent set = n - max matching
+\item Bipartite matching with weights on the left-hand nodes, minimizing the matched weight sum:
+      sort left-hand nodes ascending by weight, then just use the normal bipartite matching algorithm (Kuhn's)
+\end{itemize}

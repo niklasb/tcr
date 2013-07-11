@@ -17,11 +17,12 @@ Captype maxflow;
 Valtype mincost,dis[maxn];
 MinCostFlow() { memset(graph,-1,sizeof(graph)); top = 0; }
 inline int inverse(int x) {return 1+((x>>1)<<2)-x; }
-inline void addedge(int u,int v,Captype c, Valtype w) { // add a directed edge
+inline int addedge(int u,int v,Captype c, Valtype w) { // add a directed edge
 	edges[top].value = w; edges[top].flow = c; edges[top].node = v;
 	edges[top].next = graph[u]; graph[u] = top++;
 	edges[top].value = -w; edges[top].flow = 0; edges[top].node = u;
 	edges[top].next = graph[v]; graph[v] = top++;
+	return top-2;
 }
 bool SPFA() { // Bellmanford, also works with negative edge weight.
     int point, nod, now, head = 0, tail = 1;
