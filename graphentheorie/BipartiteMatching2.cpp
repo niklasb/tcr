@@ -14,7 +14,7 @@ bool dfs(int i) {
     return 0;
 }
 int kuhn(int n) { // n = nodes on left side (numbered 0..n-1)
-    clr(pairs,-1);
+    clr(pairs,-1); // to accelerate, just initialize with a greedy matching
     int ans = 0;
     rep(i,0,n) {
         clr(vis,0);
