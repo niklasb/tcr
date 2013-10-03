@@ -2,12 +2,12 @@
 #include <cstring>
 #include <algorithm>
 using namespace std;
-struct MinCostFlow {            //XXX Usage: class should be created by new.
-static const int maxn = 450;			 	// number of nodes, should be bigger than n
-static const int maxm = 5000;              // number of edges
 typedef long long Captype;		// set capacity type (long long or int)
 typedef long long Valtype;		// set type of edge weight (long long or int)
 static const Captype flowlimit = 1LL<<60;    // should be bigger than maxflow
+struct MinCostFlow {            //XXX Usage: class should be created by new.
+static const int maxn = 450;			 	// number of nodes, should be bigger than n
+static const int maxm = 5000;              // number of edges
 struct edge {
 	int node,next; Captype flow; Valtype value;
 }   edges[maxm<<1];
@@ -47,7 +47,7 @@ bool SPFA() { // Bellmanford, also works with negative edge weight.
             point = edges[point].next;
         }
     }
-    return pre[target]!=-1;
+    return pre[target]!=-1; //&& dis[target]<=0; //for min-cost max-flow
 }
 void extend()
 {
