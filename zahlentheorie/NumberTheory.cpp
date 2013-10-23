@@ -155,3 +155,16 @@ bool ChineseRemainderTheorem(int n, T *a, T *b, T *m, T &sol, T &mod) {
     sol = B, mod = A;
     return 1;
 }
+// compute p(n,k), the number of possibilities to write n as a sum of
+// k non-zero integers
+ll NrPartitions(int n, int k) {
+    if (n==k) return 1;
+    if (n<k || k==0) return 0;
+    ll *p = new ll[n+1];
+    for (int i = 1; i <= n; ++i) p[i] = 1;
+    for (int l = 2; l <= k; ++l)
+        for (int m = l+1; m <= n-l+1; ++m)
+            p[m] = p[m] + p[m-l];
+    delete[] p;
+    return p[n-k+1];
+}

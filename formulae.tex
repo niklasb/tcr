@@ -57,11 +57,11 @@ Bell & $B_1 = 1$, $B_n = \sum_{k=0}^{n-1} B_k \binom{n-1}{k} = \sum_{k=0}^n\left
 \begin{tabular}{@{}c|c|c|c|c|l@{}}
 \toprule
 \multicolumn{6}{c}{The Twelvefold Way (Putting $n$ balls into $k$ boxes)} \\ \hline
-Balls & same & distinguishable & same & distinguishable & \\
-Boxes & same & same & distinguishable & distinguishable & Remarks\\
+Balls & same & distinct & same & distinct & \\
+Boxes & same & same & distinct & distinct & Remarks\\
 \hline
 - & $\mathrm{p}_k(n)$ & $\sum_{i=0}^k \left\{{n\atop i}\right\}$ & $\binom{n+k-1}{k-1}$ & $k^n$ & $\mathrm{p}_k(n)$: \#partitions of $n$ into $\le k$ positive parts \\
-$\mathrm{size}\ge 1$ & $\mathrm{p}(n,k)$ & $\left\{{n\atop k}\right\}$ & $\binom{n-1}{k-1}$ & $k!\left\{{n\atop k}\right\}$ & $\mathrm{p}(n,k)$: \#partitions of $n$ into $k$ positive parts \\
+$\mathrm{size}\ge 1$ & $\mathrm{p}(n,k)$ & $\left\{{n\atop k}\right\}$ & $\binom{n-1}{k-1}$ & $k!\left\{{n\atop k}\right\}$ & $\mathrm{p}(n,k)$: \#partitions of $n$ into $k$ positive parts (\lstinline|NrPartitions|)\\
 $\mathrm{size}\le 1$ & $[n \le k]$ & $[n \le k]$ & $\binom{k}{n}$ & $n!\binom{k}{n}$ & $[cond]$: $1$ if $cond=true$, else $0$\\
 
 
