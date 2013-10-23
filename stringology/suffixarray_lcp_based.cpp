@@ -5,11 +5,8 @@ void sa_build(const char *s) { // O(n * log^2 n)
   rep(i,0,n) P[0][i]=s[i];
   sa[0] = 0; // in case n == 1
   for (stp = 1, cnt = 1; cnt < n; stp++, cnt <<= 1) {
-    rep(i,0,n) {
-      L[i] = mk(mk(P[stp-1][i],
-                   i + cnt < n ? P[stp-1][i+cnt] : -1),
-                i);
-    }
+    rep(i,0,n)
+      L[i] = mk(mk(P[stp-1][i], i + cnt < n ? P[stp-1][i+cnt] : -1), i);
     sort(L, L + n);
     rep(i,0,n)
       P[stp][L[i].snd] = i>0 && L[i].fst == L[i-1].fst ?  P[stp][L[i-1].snd] : i;
