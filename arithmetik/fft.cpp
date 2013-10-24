@@ -1,4 +1,5 @@
 typedef complex<double> cplx;
+// input should have size 2^k
 vector<cplx> fft(const vector<cplx>& a, bool inv=0) {
     int len=1, n=a.size();
     vector<cplx> A(n);
