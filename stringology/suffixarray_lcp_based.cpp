@@ -3,7 +3,7 @@ struct SA {
   pair<pii, int> L[maxn]; // O(n * log n) space
   int P[maxlg][maxn], n, stp, cnt, sa[maxn];
   string s;
-  SA(string& s) : s(s), n(s.size()) {
+  SA(string& s) : n(s.size()), s(s) {
     rep(i,0,n) P[0][i]=s[i];
     sa[0] = 0; // in case n == 1
     for (stp = 1, cnt = 1; cnt < n; stp++, cnt <<= 1) {
@@ -32,4 +32,4 @@ struct SA {
     }
     return lo;
   }
-}
+};
