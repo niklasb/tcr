@@ -1,5 +1,5 @@
+const int maxn = 200010, maxlg = 18; // maxlg = ceil(log_2(maxn))
 struct SA {
-  const int maxn = 200010, maxlg = 18; // maxlg = ceil(log_2(maxn))
   pair<pii, int> L[maxn]; // O(n * log n) space
   int P[maxlg][maxn], n, stp, cnt, sa[maxn];
   string s;
