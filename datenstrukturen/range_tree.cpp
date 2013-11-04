@@ -1,6 +1,5 @@
 // space O(n * log n), build O(n * log n), query O(log^2 n + k), k = output
-typedef int XX;
-typedef int YY;
+typedef int XX; typedef int YY;
 typedef pair<XX,YY> Point;
 typedef pair<XX, vector<Point> > Node;
 const XX inf = 1<<30;
