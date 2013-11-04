@@ -8,7 +8,7 @@ using namespace std;
 struct node {
 	int data,priority,count,size,child[2];
 } treap[maxn];
-int n,temp,top,root;
+int temp,top,root;
 inline void init() { // initialization
 	srand(time(0));
 	treap[0]=(node){0,0,0,0,{0,0}};
