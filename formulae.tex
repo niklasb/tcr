@@ -163,4 +163,5 @@ adjacent to cut edges, or alternatively, the left-side nodes NOT reachable from 
 \item Bipartite Graph: Min Cover (fewest nodes cover all edges) = max matching. Min path covering for DAG: n - maxmatching. Min dominating set = max matching + isolated nodes. Max independent set = n - max matching
 \item Bipartite matching with weights on the left-hand nodes, minimizing the matched weight sum:
       sort left-hand nodes ascending by weight, then just use the normal bipartite matching algorithm (Kuhn's)
+\item Closure problem: Find a subset $V' \subset V$ such that $V'$ is closed (every successor of a node in $V'$ is also in $V'$) and such that $\sum_{v \in V'} w(v)$ is maximal under all such subsets $V'$. We use min-cut: for every node $v$, if $w(v) > 0$, add an edge $(S, v)$ with capacity $w(v)$, otherwise add edge $(v,T)$ with capacity $-w(v)$. Add edges $(v,w)$ with capacity $\infty$ for all edges $(v,w)$ in the original graph. The source partition of the min-cut is the optimal $V'$.
 \end{itemize}
