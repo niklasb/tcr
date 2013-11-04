@@ -1,239 +1,275 @@
-#include <cmath>
-#include <algorithm>
-#include <cstdlib>
-#include <cstdio>
-#include <ctime>
-#define rep(i,x) for (int i=0;i<(x);++i)
-using namespace std;
-const double EPS = 1e-10;
-const double INF = 1e100;
-const int maxn = 1510;
-const double PI = acos(-1.0);
-const double E = exp(1.0);
-const double EULER = 0.57721566490153286;
-// change -0.00 to 0.00, d is the number of digits after dot.
-inline double fix_negative(double x, int d) {
-	static char s[40]; sprintf(s,"%.*lf",d,x);
-	return strpbrk(s, "123456789") ? x : 0;
+typedef long double D;
+const D eps=1e-12, inf=1e15, pi=acos(-1), e=exp(1.);
+
+D sq(D x) { return x*x; }
+D rem(D x, D y) { return fmod(fmod(x,y)+y,y); }
+D rtod(D rad) { return rad*180/pi; }
+D dtor(D deg) { return deg*pi/180; }
+int sgn(D x) { return (x > eps) - (x < -eps); }
+D fixzero(D x, int d) { return (x>0 || x<=-5/pow(10,d+1)) ? x:0; }
+
+typedef complex<D> P;
+namespace std {
+  bool operator<(const P& a, const P& b) {
+    return real(a)!=real(b) ? real(a)<real(b) : imag(a)<imag(b);
+  }
 }
-// sign function
-inline int sgn(const double &x) { return x<-EPS?-1:x>EPS; }
-struct Point { // point in 2D space
-    double x,y;
-    Point(): x(0.0),y(0.0) {};
-    Point(double x0,double y0): x(x0),y(y0) {};
-    Point operator+ (const Point &p) const {return Point(x+p.x,y+p.y);}
-    Point operator- (const Point &p) const {return Point(x-p.x,y-p.y);}
-    Point operator* (double k) const {return Point(x*k,y*k);}
-    Point operator/ (double k) const {return Point(x/k,y/k);}
-    bool operator< (const Point &p) const {return sgn(x-p.x)?x+EPS<p.x:y+EPS<p.y;}
-    bool operator> (const Point &p) const {return sgn(x-p.x)?x>p.x+EPS:y>p.y+EPS;}
-    bool operator== (const Point &p) const {return !(sgn(x-p.x) || sgn(y-p.y));}
-}; // point in 3D space
-struct Point3D {
-	double x,y,z;
-	Point3D(): x(0.0),y(0.0),z(0.0) {};
-	Point3D(double x0,double y0, double z0): x(x0),y(y0),z(z0) {};
-	Point3D operator+ (const Point3D &p) const {return Point3D(x+p.x,y+p.y,z+p.z);}
-	Point3D operator- (const Point3D &p) const {return Point3D(x-p.x,y-p.y,z-p.z);}
-	Point3D operator* (double k) const {return Point3D(x*k,y*k,z*k);}
-	Point3D operator/ (double k) const {return Point3D(x/k,y/k,z/k);}
-    double len2() const { return x * x + y * y + z * z; }
-    double len() const { return sqrt(len2()); }
-    Point3D tolen(double l) const { double len = l/sqrt(len2());
-    	return Point3D(x * len, y * len, z * len);}
-}; // length of cross product of vector p1-p0 and p2-p0
-inline double cross(const Point &p0,const Point &p1,const Point &p2) {
-    return (p1.x-p0.x)*(p2.y-p0.y)-(p2.x-p0.x)*(p1.y-p0.y);
-} // cross product of vector p0 and p1 in 3D space
-inline Point3D cross(const Point3D &p0, const Point3D &p1) {
-	return Point3D(p0.y*p1.z-p0.z*p1.y,p0.z*p1.x-p0.x*p1.z,p0.x*p1.y-p0.y*p1.x);
-} // cross product of vector p1-p0 and p2-p0 in 3D space
-inline Point3D cross(const Point3D &p0, const Point3D &p1, const Point3D &p2) {
-	return cross(p1-p0,p2-p0);
-} // dot product of vector p1-p0 and p2-p0
-inline double dot(const Point &p0,const Point &p1,const Point &p2) {
-    return (p1.x-p0.x)*(p2.x-p0.x)+(p1.y-p0.y)*(p2.y-p0.y);
-} // mixed product of vector p1-p0, p2-p0 and p3-p0 in 3D space
-inline double mixed(Point3D p0, Point3D p1, Point3D p2, Point3D p3) {
-	p1=p1-p0; p2=p2-p0; p3=p3-p0;
-	return p1.x*p2.y*p3.z+p2.x*p3.y*p1.z+p3.x*p1.y*p2.z
-			-p3.x*p2.y*p1.z-p2.x*p1.y*p3.z-p1.x*p3.y*p2.z;
-} // distance between points p1 and p2
-inline double dist(const Point &p1, const Point &p2) {
-    return sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y));
-} // pedal(Lot) of point p to line (p0,p1)
-Point pedal(const Point &p0, const Point &p1, const Point &p) {
-	double A = p1.y-p0.y;
-	double B = p0.x-p1.x;
-	double C = p1.x*p0.y-p0.x*p1.y;// change line(p0,p1) in form Ax+By+C=0
-	double D = A*A+B*B;
-	return Point((B*B*p.x-A*B*p.y-A*C)/D,(-A*B*p.x+A*A*p.y-B*C)/D);
-} // pedal(Lot) of point p to line (p0,p1) in 3D space
-Point3D pedal(const Point3D &p0, const Point3D &p1, const Point3D &p) {
-	double u=-((p.x-p0.x)*(p0.x-p1.x)+(p.y-p0.y)*(p0.y-p1.y)+(p.z-p0.z)*(p0.z-p1.z))/
-		((p0.x-p1.x)*(p0.x-p1.x)+(p0.y-p1.y)*(p0.y-p1.y)+(p0.z-p1.z)*(p0.z-p1.z));
-	return Point3D(p0.x+(p1.x-p0.x)*u,p0.y+(p1.y-p0.y)*u,p0.z+(p1.z-p0.z)*u);
-} // pedal(Lot) of point p to plane(p0,p1,p2)
-Point3D pedal(Point3D p0, Point3D p1, Point3D p2, Point3D p) {
-	Point3D u1=p1-p0, u2=p2-p0;
-	double A = u1.y*u2.z-u2.y*u1.z;
-	double B = u1.z*u2.x-u2.z*u1.x;
-	double C = u1.x*u2.y-u2.x*u1.y;
-	double D = -A*p0.x-B*p0.y-C*p0.z; //change plane (p0,p1,p2) to Ax+By+Cz+D=0
-	double E = A*A+B*B+C*C;
-	return p-Point3D(A,B,C)*(A*p.x+B*p.y+C*p.z+D)/E;
-}  // convert line x=p+tu to Ax+By+C=0 representation
-void fromVector(Point p, Point u, double &A, double &B, double &C) {
-    A = u.y; B = -u.x; C = cross(u, p, Point());
-} // Intersection of lines ax+by+c=0&dx+ey+f=0.
-Point intersect(double a,double b,double c,double d,double e,double f, int &num) {
-	double temp = b*d-e*a;
-	if (sgn(temp)==0) {
-		num=sgn(a*f-c*d)==0 && sgn(b*f-c*e)==0?2:0;//num=0 no intersect.num=2 coincide
-		return Point();  //in both situations return an invalid point
-	}
-	num = 1;  //num=1 just one intersection
-    return Point((c*e-f*b)/temp,(a*f-c*d)/temp); //return the intersection point
-} //intersection of segments [a,b]&[c,d], only if two segments strictly intersect
-  // each other in interior, the intersection point will be returned.
-Point intersect(Point a,Point b,Point c,Point d,int &cas) {
-	double s1,s2,s3,s4;
-	int d1,d2,d3,d4;
-	d1 = sgn(s1 = cross(a,b,c));
-	d2 = sgn(s2 = cross(a,b,d));
-	d3 = sgn(s3 = cross(c,d,a));
-	d4 = sgn(s4 = cross(c,d,b));
-	if ((d1^d2)==-2 && (d3^d4)==-2) {
-		cas = 1;  //cas=1 strictly intersect each other in the interior
-		return Point((c.x*s2-d.x*s1)/(s2-s1),(c.y*s2-d.y*s1)/(s2-s1));//intersection
-	}
-	if ((d1==0 && sgn(dot(c,a,b))<=0) ||
-		(d2==0 && sgn(dot(d,a,b))<=0) ||
-		(d3==0 && sgn(dot(a,c,d))<=0) ||
-		(d4==0 && sgn(dot(b,c,d))<=0)) cas = 2;  //cas=2,intersect but no in interior
-	else cas = 0; // no intersection
-	return Point(); // in the last two situations return an invalid intersection point
-} //intersection of circle(R,r)&line Ax+By+C=0, n is the number of intersections
-void intersect(Point R, double r, double A, double B, double C, Point *out, int &n) {
-	double D = A*A+B*B;
-	double sqrtD = sqrt(A*A+B*B);
-	double dis = fabs(A*R.x+B*R.y+C)/sqrtD;
-	if (sgn(dis-r)==1) { n = 0; return; }
-	Point F = Point((B*B*R.x-A*B*R.y-A*C)/D,(-A*B*R.x+A*A*R.y-B*C)/D);
-	if (sgn(dis-r)==0) { out[0] = F; n = 1; return; }
-	double d = sqrt(r*r-dis*dis);
-	out[0].x = F.x+B*d/sqrtD; out[0].y = F.y-A*d/sqrtD;
-	out[1].x = F.x-B*d/sqrtD; out[1].y = F.y+A*d/sqrtD;
-	if (out[0]>out[1]) swap(out[0],out[1]);
-	n = 2;
-} // intersection of Circles (R,r) and (S,s), n is the number of intersections
-void intersect(Point R, double r,Point S, double s,Point *out, int &n) {
-	if ((R==S) && (sgn(r-s)==0)) {
-		if (sgn(r)==0) {
-			n=1; out[0] = R;
-		} else n=-1; // n=-1 if two circles have infinit intersection point
-	} else intersect(R, r, 2*(S.x-R.x),2*(S.y-R.y),
-			s*s-r*r+R.x*R.x-S.x*S.x+R.y*R.y-S.y*S.y,out,n);
-} // area of a simple polygon
-double area(Point *in, int n) {
-    double res = 0;
-    for (int i=1;i<n;++i) res+=in[i].x*in[(i+1)%n].y-in[(i+1)%n].x*in[i].y;
-    return fabs(res)/2.0;
-} // check if point p is on the segment [p1,p2]
-int inSegment(const Point &p1, const Point &p2, Point p) {
-    if (p==p1) return 1;
-    if (p==p2) return 1; // return 1 if point p is on the endpoint of the segment
-    if (sgn(cross(p,p1,p2))==0 && sgn(dot(p,p1,p2))==-1) return 2;//return 2,interior
-    return 0; // return 0 if point p is not on the segment
-} // check if point p is in the polygon in[0..n-1]
-int inPolygon(Point *in, int n, Point p) {
-    double angle = 0,temp, al; int k;
-    for (int i=0;i<n;++i) {
-        temp = cross(p,in[i],in[(i+1)%n]);
-        if (sgn(temp)==0) {
-            k = inSegment(in[i],in[(i+1)%n],p);
-            if (k!=0) return k;	//return 1 on vertex or 2 on border
-        }
-        al = asin(temp/dist(p,in[i])/dist(p,in[(i+1)%n]));
-        angle += sgn(dot(p,in[i],in[(i+1)%n]))>=0?al:al>=0?PI-al:-PI-al;
-    }
-    if (fabs(angle)<1.0) return 0; else return 3; //return 0 outside or 3 inside polygon
-} // The cycle of minimal area that covers all the points in points[0..n-1].
-void minimalCycle(Point *points, int n, Point &center, double &radius) {
-	static Point p[maxn];
-	int randcase=n,x,y;
-	for (int i=0;i<n;++i) p[i] = points[i];
-	srand((unsigned)time(NULL)); //expected runtime of the algorithm is O(n)
-	for (int i=0;i<randcase;++i) //randomize all the points.
-		swap(p[rand()%n],p[rand()%n]);
-	center = p[0]; radius = 0; int useless;
-	for (int i=1;i<n;++i) {
-		if (dist(center,p[i])>radius+EPS) {
-			center=p[i], radius = 0;
-			for (int j=0;j<i;++j)
-			if (dist(center,p[j])>radius+EPS) {
-				center.x = (p[i].x+p[j].x)/2.0;
-				center.y = (p[i].y+p[j].y)/2.0;
-				radius = dist(center, p[j]);
-				for (int k=0;k<j;++k)
-				if (dist(center,p[k])>radius+EPS) {
-				center = intersect(p[j].x-p[i].x,p[j].y-p[i].y,(p[j].x*p[j].x+
-				p[j].y*p[j].y-p[i].x*p[i].x-p[i].y*p[i].y)/2,
-				p[k].x-p[i].x,p[k].y-p[i].y,(p[k].x*p[k].x+
-				p[k].y*p[k].y-p[i].x*p[i].x-p[i].y*p[i].y)/2,useless);
-					radius = dist(center,p[k]);
-    } } } }
+
+D cross(P a, P b)    { return imag(conj(a) * b); }
+D dot(P a, P b)      { return real(conj(a) * b); }
+P scale(P a, D len)  { return a * (len/abs(a)); }
+P rotate(P p, D ang) { return p * polar(1.L, ang); }
+D angle(P a, P b)    { return arg(b) - arg(a); }
+
+int ccw(P a, P b, P c) {
+  b -= a; c -= a;
+  if (cross(b, c) > eps)  return +1;  // counter clockwise
+  if (cross(b, c) < -eps) return -1;  // clockwise
+  if (dot(b, c) < 0)      return +2;  // c--a--b on line
+  if (norm(b) < norm(c))  return -2;  // a--b--c on line
+  return 0;
 }
-void line2Points(double A, double B,double C, Point &p0, Point &p1) {
-    if (sgn(A)==0) { p0 = Point(-C/A,0); p1 = Point(-(B+C)/A,1); }
-    else { p0 = Point(0, -C/B); p1 = Point(1, -(A+C)/B); }
+
+typedef vector<P> L;
+typedef vector<P> G;
+G dummy;
+L line(P a, P b) {
+  L res; res.pb(a); res.pb(b); return res;
 }
-void points2Line(Point p0, Point p1, double &A, double &B, double &C) {
-    A = p1.y-p0.y; B = p0.x-p1.x; C = p1.x*p0.y-p0.x*p1.y;
+P dir(const L& l) { return l[1]-l[0]; }
+
+D project(P e, P x) { return dot(e,x) / norm(e); }
+P pedal(const L& l, P p) { return l[1] + dir(l) * project(dir(l), p-l[1]); }
+int intersectLL(const L &l, const L &m) {
+  if (abs(cross(l[1]-l[0], m[1]-m[0])) > eps) return 1;  // non-parallel
+  if (abs(cross(l[1]-l[0], m[0]-l[0])) < eps) return -1; // same line
+  return 0;
 }
-void plane2Points(double A, double B, double C, double D, Point3D &p0, Point3D &p1, Point3D &p2) {
-    if(sgn(A)!=0){p0=Point3D(-D/A,0,0);p1=Point3D(-(B+D)/A,1,0);p2=Point3D(-(C+D)/A,0,1);} else
-    if(sgn(B)!=0){p0=Point3D(0,-D/B,0);p1=Point3D(1,-(A+D)/B,0);p2=Point3D(0,-(C+D)/B,0);} else
-    if(sgn(C)!=0){p0=Point3D(0,0,-D/C);p1=Point3D(1,0,-(A+D)/C);p2=Point3D(0,1,-(B+D)/C);}
+bool intersectLS(const L& l, const L& s) {
+  return cross(dir(l), s[0]-l[0])*       // s[0] is left of l
+         cross(dir(l), s[1]-l[0]) < eps; // s[1] is right of l
+}
+bool intersectLP(const L& l, const P& p) {
+  return abs(cross(l[1]-p, l[0]-p)) < eps;
+}
+bool intersectSS(const L& s, const L& t) {
+  return sgn(ccw(s[0],s[1],t[0]) * ccw(s[0],s[1],t[1])) <= 0 &&
+         sgn(ccw(t[0],t[1],s[0]) * ccw(t[0],t[1],s[1])) <= 0;
+}
+bool intersectSP(const L& s, const P& p) {
+  return abs(s[0]-p)+abs(s[1]-p)-abs(s[1]-s[0]) < eps; // triangle inequality
+}
+P reflection(const L& l, P p) {
+  return p + P(2,0) * (pedal(l, p) - p);
+}
+D distanceLP(const L& l, P p) {
+  return abs(p - pedal(l, p));
+}
+D distanceLL(const L& l, const L& m) {
+  return intersectLL(l, m) ? 0 : distanceLP(l, m[0]);
+}
+D distanceLS(const L& l, const L& s) {
+  if (intersectLS(l, s)) return 0;
+  return min(distanceLP(l, s[0]), distanceLP(l, s[1]));
+}
+D distanceSP(const L& s, P p) {
+  P r = pedal(s, p);
+  if (intersectSP(s, r)) return abs(r - p);
+  return min(abs(s[0] - p), abs(s[1] - p));
+}
+D distanceSS(const L& s, const L& t) {
+  if (intersectSS(s, t)) return 0;
+  return min(min(distanceSP(s, t[0]), distanceSP(s, t[1])),
+             min(distanceSP(t, s[0]), distanceSP(t, s[1])));
+}
+P crosspoint(const L& l, const L& m) { // return intersection point
+  D A = cross(dir(l), dir(m));
+  D B = cross(dir(l), l[1] - m[0]);
+  return m[0] + B / A * dir(m);
+}
+L bisector(P a, P b) {
+  P A = (a+b)*P(0.5,0);
+  return line(A, A+(b-a)*P(0,1));
+}
+
+#define next(g,i) g[(i+1)%g.size()]
+D area(const G& g) {
+  D A = 0;
+  rep(i,0,g.size())
+    A += cross(g[i], next(g,i));
+  return abs(A/2);
+}
+// intersect with half-plane left of l[0] -> l[1]
+G convex_cut(const G& g, const L& l) {
+  G Q;
+  rep(i,0,g.size()) {
+    P A = g[i], B = next(g,i);
+    if (ccw(l[0], l[1], A) != -1) Q.pb(A);
+    if (ccw(l[0], l[1], A)*ccw(l[0], l[1], B) < 0)
+      Q.pb(crosspoint(line(A, B), l));
+  }
+  return Q;
+}
+G voronoi_cell(G g, const vector<P> &v, int s) {
+  rep(i,0,v.size())
+    if (i!=s)
+      g = convex_cut(g, bisector(v[s], v[i]));
+  return g;
+}
+bool convex_contain(const G& g, P p) {
+  rep(i,0,g.size())
+    if (ccw(g[i], next(g, i), p) == -1) return 0;
+  return 1;
+}
+bool intersectGG(const G& g1, const G& g2) {
+  if (convex_contain(g1, g2[0])) return 1;
+  if (convex_contain(g2, g1[0])) return 1;
+  rep(i,0,g1.size()) rep(j,0,g2.size()) {
+    if (intersectSS(line(g1[i], next(g1, i)), line(g2[j], next(g2, j)))) return 1;
+  }
+  return 0;
+}
+D distanceGP(const G& g, P p) {
+  if (convex_contain(g, p)) return 0;
+  D res = inf;
+  rep(i,0,g.size()) {
+    res = min(res, distanceSP(line(g[i], next(g, i)), p));
+  }
+  return res;
+}
+P centroid(const G& v) {
+  D S = 0;
+  P res;
+  rep(i,0,v.size()) {
+    D tmp = cross(v[i], next(v,i));
+    S += tmp;
+    res += (v[i] + next(v,i)) * tmp;
+  }
+  S /= 2;
+  res /= 6*S;
+  return res;
+}
+
+struct C {
+  P p; D r;
+  C(P p, D r) : p(p),r(r) {}
+  C(){}
+};
+// intersect circle with line through (c.p + v * dst/abs(v)) "orthogonal" to the circle
+// dst can be negative
+G intersectCL2(const C& c, D dst, P v) {
+  G res;
+  P mid = c.p + v * (dst/abs(v));
+  if (sgn(abs(dst)-c.r) == 0) { res.pb(mid); return res; }
+  D h = sqrt(sq(c.r) - sq(dst));
+  P hi = scale(v * P(0,1), h);
+  res.pb(mid + hi); res.pb(mid - hi);
+  return res;
+}
+G intersectCL(const C& c, const L& l) {
+  if (intersectLP(l, c.p)) {
+    P h = scale(dir(l), c.r);
+    G res; res.pb(c.p + h); res.pb(c.p - h); return res;
+  }
+  P v = pedal(l, c.p) - c.p;
+  return intersectCL2(c, abs(v), v);
+}
+G intersectCS(const C& c, const L& s) {
+  G res1 = intersectCL(c,s), res2;
+  foreach(it, res1) if (intersectSP(s, *it)) res2.pb(*it);
+  return res2;
+}
+int intersectCC(const C& a, const C& b, G& res=dummy) {
+  D sum = a.r + b.r, diff = abs(a.r - b.r), dst = abs(a.p - b.p);
+  if (dst > sum + eps || dst < diff - eps) return 0;
+  if (max(dst, diff) < eps) { // same circle
+    if (a.r < eps) { res.pb(a.p); return 1; } // degenerate
+    return -1; // infinitely many
+  }
+  D p = (sq(a.r) - sq(b.r) + sq(dst))/(2*dst);
+  P ab = b.p - a.p;
+  res = intersectCL2(a, p, ab);
+  return res.size();
+}
+typedef valarray<D> P3;
+P3 p3(D x=0, D y=0, D z=0) {
+  P3 res(3);
+  res[0]=x;res[1]=y;res[2]=z;
+  return res;
+}
+ostream& operator<<(ostream& out, const P3& x) {
+  return out << "(" << x[0]<<","<<x[1]<<","<<x[2]<<")";
+}
+P3 cross(const P3& a, const P3& b) {
+  P3 res;
+  rep(i,0,3) res[i]=a[(i+1)%3]*b[(i+2)%3]-a[(i+2)%3]*b[(i+1)%3];
+  return res;
+}
+D dot(const P3& a, const P3& b) {
+  return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+}
+D norm(const P3& x) { return dot(x,x); }
+D abs(const P3& x) { return sqrt(norm(x)); }
+D project(const P3& e, const P3& x) { return dot(e,x) / norm(e); }
+P project_plane(const P3& v, P3 w, const P3& p) {
+  w -= project(v,w)*v;
+  return P(dot(p,v)/abs(v), dot(p,w)/abs(w));
 }
 template <typename T, int N> struct Matrix {
   T data[N][N];
-  Matrix<T,N>() { memset(data, 0, sizeof data); }
-  static Matrix<T,N> identity() { Matrix m; rep(i,N) m[i][i] = 1; return m; }
+  Matrix<T,N>() { clr(data,0); }
   Matrix<T,N> operator+(const Matrix<T,N>& other) const {
-    Matrix res; rep(i,N) rep(j,N) res[i][j] = data[i][j] + other[i][j]; return res;
+    Matrix res; rep(i,0,N) rep(j,0,N) res[i][j] = data[i][j] + other[i][j]; return res;
   }
   Matrix<T,N> operator*(const Matrix<T,N>& other) const {
-    Matrix res; rep(i,N) rep(k,N) rep(j,N) res[i][j] += data[i][k] * other[k][j]; return res;
-  }
-  template <typename E> Matrix<T,N> operator^(E exp) const {
-    Matrix<T,N> result = Matrix<T,N>::identity(), base = *this;
-    while (exp) {
-      if (exp & 1) result = result * base;
-      exp >>= 1;
-      base = base * base;
-    }
-    return result;
+    Matrix res; rep(i,0,N) rep(k,0,N) rep(j,0,N) res[i][j] += data[i][k] * other[k][j]; return res;
   }
   Matrix<T,N> transpose() const {
-    Matrix<T,N> res; rep(i,N) rep(j,N) res[i][j] = data[j][i]; return res;
+    Matrix res; rep(i,0,N) rep(j,0,N) res[i][j] = data[j][i]; return res;
   }
   void multiply_vector(const T v[N], T result[N]) {
-    rep(i, N) result[i] = 0;
-    rep(i, N) rep(j, N) result[i] += data[i][j] * v[j];
+    rep(i,0,N) result[i] = 0;
+    rep(i,0,N) rep(j,0,N) result[i] += data[i][j] * v[j];
   }
   const T* operator[](int i) const { return data[i]; }
   T* operator[](int i) { return data[i]; }
 };
+template <typename T, int N>
+static Matrix<T,N> id() { Matrix<T,N> m; rep(i,0,N) m[i][i] = 1; return m; }
+template <typename T>
+T pow(const T& x, ll e) {
+  if (!e) return id<T>();
+  if (e & 1) return x*pow(x,e-1);
+  T res = pow(x,e/2);
+  return res*res;
+}
 template <typename T, int N> ostream& operator<<(ostream& out, Matrix<T,N> mat) {
-  rep(i, N) { rep(j, N) cout << mat[i][j] << " "; cout << endl; } return out;
+  rep(i,0,N) { rep(j,0,N) out << mat[i][j] << " "; cout << endl; } return out;
 } // creates a rotation matrix around axis x (must be normalized). Rotation is
 // counter-clockwise if you look in the inverse direction of x onto the origin
 template<typename M> void create_rot_matrix(M& m, double x[3], double a) {
-  rep(i, 3) rep(j, 3) {
+  rep(i,0,3) rep(j,0,3) {
     m[i][j] = x[i]*x[j]*(1-cos(a));
     if (i == j) m[i][j] += cos(a);
     else m[i][j] += x[(6-i-j)%3] * ((i == (2+j) % 3) ? -1 : 1) * sin(a);
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cout << fixed << setprecision(3);
+  D x1,y1,x2,y2,r1,r2;
+  vector<P> ip;
+  while (cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2) {
+    ip.clear();
+    int res = intersectCC(C(P(x1,y1),r1), C(P(x2,y2),r2), ip);
+    if (res==0) cout << "NO INTERSECTION";
+    else if (res==-1) cout << "THE CIRCLES ARE THE SAME";
+    sort(all(ip));
+    rep(i,0,ip.size()) {
+      cout << "(" << fixzero(real(ip[i]),3) << "," << fixzero(imag(ip[i]),3) << ")";
+      //cout << "(" << real(ip[i]) << "," << imag(ip[i]) << ")";
+    }
+    cout << endl;
   }
 }
