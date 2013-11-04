@@ -8,7 +8,6 @@
 #include <cmath>
 #define maxn 200010
 #define maxl 19     // 1 << (maxl - 1) should be >= maxn
-#define maxc 256	// should be bigger than the maximal character value in s
 #define EPS 1e-12
 int  n, s[maxn], SA[maxn], rank[maxn], h[maxn], height[20][maxn];
 inline int max(int a1,int a2) {return a1>a2?a1:a2;}
