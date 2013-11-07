@@ -254,22 +254,3 @@ template<typename M> void create_rot_matrix(M& m, double x[3], double a) {
     else m[i][j] += x[(6-i-j)%3] * ((i == (2+j) % 3) ? -1 : 1) * sin(a);
   }
 }
-
-int main() {
-  ios::sync_with_stdio(0);
-  cout << fixed << setprecision(3);
-  D x1,y1,x2,y2,r1,r2;
-  vector<P> ip;
-  while (cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2) {
-    ip.clear();
-    int res = intersectCC(C(P(x1,y1),r1), C(P(x2,y2),r2), ip);
-    if (res==0) cout << "NO INTERSECTION";
-    else if (res==-1) cout << "THE CIRCLES ARE THE SAME";
-    sort(all(ip));
-    rep(i,0,ip.size()) {
-      cout << "(" << fixzero(real(ip[i]),3) << "," << fixzero(imag(ip[i]),3) << ")";
-      //cout << "(" << real(ip[i]) << "," << imag(ip[i]) << ")";
-    }
-    cout << endl;
-  }
-}
