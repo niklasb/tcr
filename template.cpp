@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <cassert>
+#include <sys/resource.h>
 using namespace std;
 using ll=long long;
 using ld=long double;
@@ -16,3 +17,10 @@ using vi=vector<int>;
 #define uset unordered_set
 #define umap unordered_map
 const int dx[]={0,0,1,-1,1,-1,1,-1}, dy[]={-1,1,0,0,1,-1,-1,1};
+int main() {
+  ios::sync_with_stdio(0);
+  cout << fixed << setprecision(16);
+  rlim_t stacksz = 64*1024*1024;
+  rlimit rl{stacksz,stacksz};
+  setrlimit(RLIMIT_STACK, &rl); // should return 0
+}
