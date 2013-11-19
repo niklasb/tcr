@@ -2,10 +2,6 @@
  * Use graham algorithm to get the convex hull.
  * Note: In extreme situation, when all points coincide, the program won't work
  * probably. A prejudge of this situation may consequently be needed */
-#include<cstdio>
-#include<cmath>
-#include<algorithm>
-using namespace std;
 const int mn = 100005;
 const double pi = acos(-1.0), eps = 1e-5;
 struct point { double x, y; } a[mn];

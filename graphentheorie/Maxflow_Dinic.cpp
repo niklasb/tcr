@@ -1,9 +1,3 @@
-#include <cstdio>
-#include <cstring>
-#include <algorithm>
-#include <iostream>
-using namespace std;
-
 typedef long long captype;  // set capacity type (long long or int)
 static const captype flowlimit = 1LL << 60; // should be > maxflow
 

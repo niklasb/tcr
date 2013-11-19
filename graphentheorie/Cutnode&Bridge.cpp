@@ -1,11 +1,4 @@
-#include <cstring>
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-using namespace std;
-#define maxn 10010
-#define maxm 50010
-
+const int maxn 10010, maxm = 50010;
 int ans;
 
 struct edge {

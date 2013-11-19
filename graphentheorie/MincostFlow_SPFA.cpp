@@ -1,7 +1,3 @@
-#include <cstdio>
-#include <cstring>
-#include <algorithm>
-using namespace std;
 typedef long long Captype;		// set capacity type (long long or int)
 typedef long long Valtype;		// set type of edge weight (long long or int)
 static const Captype flowlimit = 1LL<<60;    // should be bigger than maxflow

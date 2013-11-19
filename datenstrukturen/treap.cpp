@@ -1,8 +1,3 @@
-#include <cstdio>
-#include <cstdlib>
-#include <ctime>
-#include <cstring>
-using namespace std;
 #define INVALID -(1<<30)
 #define maxn 210000
 struct node {

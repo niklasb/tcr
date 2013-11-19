@@ -1,9 +1,5 @@
 // Runtime O(N+Q), offline algorithm.
-#include <cstdio>
-#include <algorithm>
-#include <cstring>
-using namespace std;
-#define maxn 110000
+const int maxn 110000;
 struct node {
 	int data,next,answer;
 } edge[maxn],query[maxn];
