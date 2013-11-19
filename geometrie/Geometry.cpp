@@ -100,23 +100,8 @@ D area(const G& g) {
     A += cross(g[i], next(g,i));
   return abs(A/2);
 }
+
 // intersect with half-plane left of l[0] -> l[1]
-void graham_step(G& a, G& st, int i, int bot) {
-  while (st.size()>bot && sgn(cross(*(st.end()-2), st.back(), a[i]))<=0)
-    st.pop_back();
-  st.pb(a[i]);
-}
-bool cmpY(P a, P b) { return mk(imag(a),real(a)) < mk(imag(b),real(b)); }
-G graham_scan(const G& points) { // will change the order of a
-  G a = points; sort(all(a),cmpY);
-  int n = a.size();
-  if (n<=1) return a;
-  G st; st.pb(a[0]); st.pb(a[1]);
-  for (int i = 2; i < n; i++) graham_step(a,st,i,1);
-  int mid = st.size();
-  for (int i = n - 2; i >= 0; i--) graham_step(a,st,i,mid);
-  return st;
-}
 G convex_cut(const G& g, const L& l) {
   G Q;
   rep(i,0,g.size()) {
@@ -126,6 +111,24 @@ G convex_cut(const G& g, const L& l) {
       Q.pb(crosspoint(line(A, B), l));
   }
   return Q;
+}
+void graham_step(G& a, G& st, int i, int bot) {
+  while (st.size()>bot && sgn(cross(*(st.end()-2), st.back(), a[i]))<=0)
+    st.pop_back();
+  st.pb(a[i]);
+}
+bool cmpY(P a, P b) { return mk(imag(a),real(a)) < mk(imag(b),real(b)); }
+G graham_scan(const G& points) {
+  // special case: all points coincide, algo might return point twice
+  G a = points; sort(all(a),cmpY);
+  int n = a.size();
+  if (n<=1) return a;
+  G st; st.pb(a[0]); st.pb(a[1]);
+  for (int i = 2; i < n; i++) graham_step(a,st,i,1);
+  int mid = st.size();
+  for (int i = n - 2; i >= 0; i--) graham_step(a,st,i,mid);
+  while (st.size() > 1 && !sgn(abs(st.back() - st.front()))) st.pop_back();
+  return st;
 }
 G voronoi_cell(G g, const vector<P> &v, int s) {
   rep(i,0,v.size())
