@@ -17,4 +17,6 @@ int main() {
   rlim_t stacksz = 64*1024*1024;
   rlimit rl{stacksz,stacksz};
   setrlimit(RLIMIT_STACK, &rl); // should return 0
+  run();
 }
+void run() { }
