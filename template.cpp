@@ -11,6 +11,7 @@ using vi=vector<int>;
 #define clr(x,y) memset(x,y,sizeof x)
 #define contains(x,y) (x).find(y)!=end(x)
 const int dx[]={0,0,1,-1,1,-1,1,-1}, dy[]={-1,1,0,0,1,-1,-1,1};
+void run();
 int main() {
   ios::sync_with_stdio(0);
   cout << fixed << setprecision(16);
