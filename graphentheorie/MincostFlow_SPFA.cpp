@@ -1,4 +1,5 @@
 typedef long long Captype;		// set capacity type (long long or int)
+// for Valtype double, replace clr(dis,0x7f) and use epsilon for distance comparison
 typedef long long Valtype;		// set type of edge weight (long long or int)
 static const Captype flowlimit = 1LL<<60;    // should be bigger than maxflow
 struct MinCostFlow {            //XXX Usage: class should be created by new.
@@ -43,7 +44,7 @@ bool SPFA() { // Bellmanford, also works with negative edge weight.
             point = edges[point].next;
         }
     }
-    return pre[target]!=-1; //&& dis[target]<=0; //for min-cost max-flow
+    return pre[target]!=-1; //&& dis[target]<=0; // for min-cost rather than max-flow
 }
 void extend()
 {
