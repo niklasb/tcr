@@ -165,4 +165,5 @@ adjacent to cut edges, or alternatively, the left-side nodes NOT reachable from 
 \item Bipartite matching with weights on the left-hand nodes, minimizing the matched weight sum:
       sort left-hand nodes ascending by weight, then just use the normal bipartite matching algorithm (Kuhn's)
 \item Closure problem: Find a subset $V' \subset V$ such that $V'$ is closed (every successor of a node in $V'$ is also in $V'$) and such that $\sum_{v \in V'} w(v)$ is maximal under all such subsets $V'$. We use min-cut: for every node $v$, if $w(v) > 0$, add an edge $(S, v)$ with capacity $w(v)$, otherwise add edge $(v,T)$ with capacity $-w(v)$. Add edges $(v,w)$ with capacity $\infty$ for all edges $(v,w)$ in the original graph. The source partition of the min-cut is the optimal $V'$.
+\item Erdős–Gallai theorem: A sequence of non-negative integers $d_1\geq\cdots\geq d_n$ can be represented as the degree sequence of a finite simple graph on $n$ vertices if and only if $d_1+\cdots+d_n$ is even and $\sum^{k}_{i=1}d_i\leq k(k-1)+ \sum^n_{i=k+1} \min(d_i,k) \ \forall\ 1 \leq k \leq n$
 \end{itemize}
