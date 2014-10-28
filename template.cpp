@@ -10,6 +10,9 @@ using vi=vector<int>;
 #define all(x) begin(x),end(x)
 #define clr(x,y) memset(x,y,sizeof x)
 #define contains(x,y) (x).find(y)!=end(x)
+#define mk make_pair
+#define fst first
+#define snd second
 const int dx[]={0,0,1,-1,1,-1,1,-1}, dy[]={-1,1,0,0,1,-1,-1,1};
 void run();
 int main() {
