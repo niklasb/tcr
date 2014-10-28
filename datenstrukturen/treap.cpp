@@ -1,73 +1,47 @@
-#define INVALID -(1<<30)
-#define maxn 210000
-struct node {
-	int data,priority,count,size,child[2];
-} treap[maxn];
-int temp,top,root;
-inline void init() { // initialization
-	srand(time(0));
-	treap[0]=(node){0,0,0,0,{0,0}};
-	top=0; root=0;
+struct Node {
+	int val, prio, size;
+	Node* child[2];
+	void apply() { // apply lazy actions and push them down
+	}
+	void maintain() {
+		size = 1;
+		rep(i,0,2) size += child[i] ? child[i]->size : 0;
+	}
+};
+pair<Node*, Node*> split(Node* n, int val) { // returns (< val, >= val)
+	if (!n) return {0,0};
+	n->apply();
+	Node*& c = n->child[val > n->val];
+	auto sub = split(c, val);
+	if (val > n->val) { c = sub.fst; n->maintain(); return mk(n, sub.snd); }
+	else              { c = sub.snd; n->maintain(); return mk(sub.fst, n); }
 }
-inline void maintain(int r) {
-	treap[r].size=treap[treap[r].child[0]].size+
-			treap[treap[r].child[1]].size+treap[r].count;
-} // op=0 right rotate, otherwise left rotate
-inline void rotate(int &r, int op) {
-	temp=treap[r].child[op];
-	treap[r].child[op]=treap[temp].child[!op];
-	treap[temp].child[!op]=r;
-	maintain(r); maintain(temp); r=temp;
-} // insert an element
-void insert(int &r,int d) {
-	if (r==0)
-		treap[r=++top]=(node){d,rand(),1,1,{0,0}};
-	else if (d==treap[r].data)
-		treap[r].count++,treap[r].size++;
-	else {
-		int dir = d>treap[r].data;
-		insert(treap[r].child[dir],d);
-		treap[r].size++;
-		if (treap[treap[r].child[dir]].priority<treap[r].priority)
-			rotate(r, dir);
+Node* merge(Node* l, Node* r) {
+	if (!l || !r) return l ? l : r;
+	if (l->prio > r->prio) {
+		l->apply();
+		l->child[1] = merge(l->child[1], r);
+		l->maintain();
+		return l;
+	} else {
+		r->apply();
+		r->child[0] = merge(l, r->child[0]);
+		r->maintain();
+		return r;
 	}
-} // find and delete an element, return false if element is not found
-bool remove(int r,int d) {
-	bool res;
-	if (r==0)
-		res=false;
-	else if (d!=treap[r].data)
-			res = remove(treap[r].child[d>treap[r].data],d);
-	else {
-		if ((res = (treap[r].count>0)))
-			treap[r].count--;
-	}
-	maintain(r);  	//when r == 0 , maintain does nothing
-	return res;
-} // count how many duplications does the given element have
-int find(int r,int d) {
-	while (r!=0 && treap[r].data!=d)
-		r = treap[r].child[d>treap[r].data];
-	return treap[r].count;
-} // count how many elements <= the given element
-int lessequal(int r, int d) {
-	int res = 0;
-	while (r!=0 && treap[r].data!=d) {
-		if (d>treap[r].data)
-			res+=treap[r].count+treap[treap[r].child[0]].size;
-		r = treap[r].child[d>treap[r].data];
-	}
-	return res+treap[r].count+treap[treap[r].child[0]].size;
-}// return the k-th smallest element
-int kth(int r,int d) {
-	if (d>treap[r].size || d<1)
-			return INVALID;
-	while (true)
-		if (d>treap[treap[r].child[0]].size) {
-			d-=treap[treap[r].child[0]].size;
-			if (d<=treap[r].count)
-				return treap[r].data;
-			else
-				d-=treap[r].count,r=treap[r].child[1];
-		} else r=treap[r].child[0];
+}
+Node* insert(Node* n, int val) {
+	auto sub = split(n, val);
+	Node* x = new Node { val, rand(), 1 };
+	return merge(merge(sub.fst, x), sub.snd);
+}
+Node* remove(Node* n, int val) {
+	if (!n) return 0;
+	n->apply();
+	if (val == n->val)
+		return merge(n->child[0], n->child[1]);
+	Node*& c = n->child[val > n->val];
+	c = remove(c, val);
+	n->maintain();
+	return n;
 }
