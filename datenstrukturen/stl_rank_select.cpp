@@ -7,5 +7,5 @@ int main() {
     Tree X;
     for (int i = 1; i <= 16; i <<= 1) X.insert(i); // { 1, 2, 4, 8, 16 };
     cout << *X.find_by_order(3) << endl; // => 8
-    cout << X.order_of_key(3) << endl; // => 4 = successor of 10 = min i such that X[i] >= 10
+    cout << X.order_of_key(10) << endl; // => 4 = successor of 10 = min i such that X[i] >= 10
 }

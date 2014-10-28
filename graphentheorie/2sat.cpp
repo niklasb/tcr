@@ -15,6 +15,7 @@ void dfs(int u, vector<int> adj[]) {
     bycol[col].pb(u);
   } else st.pb(u);
 }
+// this computes SCCs, outputs them in bycol, in topological order
 void kosaraju(int n) { // n = number of nodes
   st.clear();
   clr(vis,0);

@@ -2,8 +2,7 @@ const int maxn = 200010, maxlg = 18; // maxlg = ceil(log_2(maxn))
 struct SA {
   pair<pii, int> L[maxn]; // O(n * log n) space
   int P[maxlg+1][maxn], n, stp, cnt, sa[maxn];
-  string s;
-  SA(string& s) : n(s.size()), s(s) { // O(n * log n)
+  SA(const string& s) : n(s.size()) { // O(n * log n)
     rep(i,0,n) P[0][i] = s[i];
     sa[0] = 0; // in case n == 1
     for (stp = 1, cnt = 1; cnt < n; stp++, cnt <<= 1) {

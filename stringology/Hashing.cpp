@@ -9,7 +9,7 @@ struct Hasher { // use two of those, with different mod (e.g. 1e9+7 and 1e9+9)
     pref.pb(0);
     rep(i,0,s.size()) pref.pb(((ll)pref.back() * q % mod + s[i]) % mod);
   }
-  int hash(int l, int r) {
+  int hash(int l, int r) { // compute hash(s[l..r]) with r inclusive
     return (pref[r+1] - (ll)power[r-l+1] * pref[l] % mod + mod) % mod;
   }
 };
