@@ -6,6 +6,7 @@ D rem(D x, D y) { return fmod(fmod(x,y)+y,y); }
 D rtod(D rad) { return rad*180/pi; }
 D dtor(D deg) { return deg*pi/180; }
 int sgn(D x) { return (x > eps) - (x < -eps); }
+// when doing printf("%.Xf", x), fix '-0' output to '0'.
 D fixzero(D x, int d) { return (x>0 || x<=-5/pow(10,d+1)) ? x:0; }
 
 typedef complex<D> P;
@@ -167,6 +168,24 @@ G graham_scan(const G& points) { // will return points in ccw order
   for (int i = n - 2; i >= 0; i--) graham_step(a,st,i,mid);
   while (st.size() > 1 && !sgn(abs(st.back() - st.front()))) st.pop_back();
   return st;
+}
+G gift_wrap(const G& points) { // will return points in clockwise order
+  // special case: duplicate points, not sure what happens then
+  int n = points.size();
+  if (n<=2) return points;
+  G res;
+  P nxt, p = *min_element(all(points), [](const P& a, const P& b){
+    return real(a) < real(b);
+  });
+  do {
+    res.pb(p);
+    nxt = points[0];
+    for (auto& q: points)
+      if (abs(p - q) > eps && (abs(p - nxt) < eps || ccw(p, nxt, q) == 1))
+        nxt = q;
+    p = nxt;
+  } while (nxt != *begin(res));
+  return res;
 }
 G voronoi_cell(G g, const vector<P> &v, int s) {
   rep(i,0,v.size())
