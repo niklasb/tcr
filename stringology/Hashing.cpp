@@ -1,24 +1,15 @@
-const int maxn = 100100;
-const ll hmod = 1e18+3, hp = 311;
-ll hpow[maxn];
-
-ll MultiplyMod(ll a, ll b, ll mod) { //computes a * b % mod
-  ull r = 0;
-  while (b) {
-    if (b & 1) r = (r + a) % mod;
-    b >>= 1, a = ((ull)a << 1) % mod;
+int q = 311;
+struct Hasher { // use two of those, with different mod (e.g. 1e9+7 and 1e9+9)
+  string s;
+  int mod;
+  vector<int> power, pref;
+  Hasher(const string& s, int mod) : s(s), mod(mod) {
+    power.pb(1);
+    rep(i,1,s.size()) power.pb((ll)power.back() * q % mod);
+    pref.pb(0);
+    rep(i,0,s.size()) pref.pb(((ll)pref.back() * q % mod + s[i]) % mod);
   }
-  return r;
-}
-void initpow() { // call once
-  hpow[0] = 1;
-  rep(i,1,maxn) hpow[i] = MultiplyMod(hpow[i-1],hp,hmod);
-}
-void initstr(string& s, ll pref[]) { // call to initialize prefix hash array for s
-  pref[0] = 0;
-  rep(i,0,s.size())
-    pref[i+1] = (MultiplyMod(pref[i],hp,hmod) + s[i])%hmod;
-}
-ll gethash(int l, int r, ll pref[]) { // hash s[l..r]
-  return (pref[r+1] - MultiplyMod(hpow[r-l+1],pref[l],hmod) + hmod)%hmod;
-}
+  int hash(int l, int r) {
+    return (pref[r+1] - (ll)power[r-l+1] * pref[l] % mod + mod) % mod;
+  }
+};
