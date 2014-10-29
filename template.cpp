@@ -14,6 +14,7 @@ using vi=vector<int>;
 #define fst first
 #define snd second
 #define pb push_back
+#define endl "\n"
 const int dx[]={0,0,1,-1,1,-1,1,-1}, dy[]={-1,1,0,0,1,-1,-1,1};
 void run();
 int main() {
