@@ -104,6 +104,7 @@ D area(const G& g) {
   return abs(A/2);
 }
 
+// functions below might expect polygons to be given in ccw order
 // intersect with half-plane left of l[0] -> l[1]
 G convex_cut(const G& g, const L& l) {
   G Q;
