@@ -9,7 +9,7 @@ using vi=vector<int>;
 #define rep(i,s,e) for (int i=(s);i<(e);++i)
 #define all(x) begin(x),end(x)
 #define clr(x,y) memset(x,y,sizeof x)
-#define contains(x,y) (x).find(y)!=end(x)
+#define contains(x,y) ((x).find(y)!=end(x))
 #define mk make_pair
 #define fst first
 #define snd second
