@@ -27,7 +27,7 @@ void gauss(int m, int n) { // reduces M to Gaussian normal form
 	for (int col = 0; col < n; ++col) { // eliminate downwards
 		int pivot=row;
 		while(pivot<m&&M[pivot][col].zero())pivot++;
-		if (M[pivot][col].zero()) continue;
+		if (pivot == m || M[pivot][col].zero()) continue;
 		if (row!=pivot) {
 			for (int j = 0; j < n; ++j) {
 				R tmp = M[row][j];
