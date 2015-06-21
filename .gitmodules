@@ -1,0 +1,3 @@
+[submodule "niklas"]
+	path = niklas
+	url = https://github.com/niklasb/contest-algos
